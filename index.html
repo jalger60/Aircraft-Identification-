@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aircraft Identifier</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="site-header">
+    <div class="nav-container">
+        <!-- ACCESSIBILITY Best Practice: Wrapped the logo in a link to the homepage. -->
+        <a href="index.html" class="logo">AeroVision</a>
+        
+        <!-- ACCESSIBILITY Best Practice: Added an aria-label to describe the purpose of the navigation. -->
+        <nav class="main-nav" aria-label="Main navigation">
+            <ul>
+                <!-- Boeing Dropdown Menu -->
+                <li class="dropdown">
+                    <!-- 
+                        ACCESSIBILITY CHANGES:
+                        1. aria-haspopup="true":  Tells screen readers that this link opens a menu.
+                        2. aria-expanded="false": Informs the user that the menu is currently closed.
+                        3. aria-controls="boeing-submenu": Programmatically links this button to the submenu it controls.
+                    -->
+                    <a href="#" aria-haspopup="true" aria-expanded="false" aria-controls="boeing-submenu">Boeing <span class="arrow">&#9662;</span></a>
+                    
+                    <!-- ACCESSIBILITY: Added a unique 'id' to be referenced by the 'aria-controls' attribute above. -->
+                    <ul class="submenu" id="boeing-submenu">
+                        <li><a href="boeing777.html">Boeing 777</a></li>
+                        <li><a href="#">Boeing 787</a></li>
+                    </ul>
+                </li>
+
+                <!-- Airbus Dropdown Menu -->
+                <li class="dropdown">
+                    <!-- ACCESSIBILITY: Same ARIA attributes applied for the Airbus menu. -->
+                    <a href="#" aria-haspopup="true" aria-expanded="false" aria-controls="airbus-submenu">Airbus <span class="arrow">&#9662;</span></a>
+                    
+                    <!-- ACCESSIBILITY: Added a unique 'id' for the Airbus submenu. -->
+                    <ul class="submenu" id="airbus-submenu">
+                        <li><a href="Airbus A380.html">Airbus A380</a></li>
+                        <li><a href="#">Airbus A320</a></li>
+                    </ul>
+                </li>
+            </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="main-container">
+            <!-- Hero Section combines Heading, Info, and Image -->
+            <section class="hero-section">
+                <div class="hero-text">
+                    <h1>Aircraft Identifier</h1>
+                    <p>
+                        Use cutting-edge machine learning to identify aircraft instantly.
+                        This tool runs entirely in your browser—just upload an image to begin your discovery.
+                    </p>
+                </div>
+                <div class="hero-image">
+                    <!-- Image applied via CSS -->
+                </div>
+            </section>
+
+            <!-- Tool Section for the ML Uploader -->
+            <section class="tool-section">
+                <div class="tool-content">
+                    <h2>Upload Your Image</h2>
+                    <p class="instructions">Select a photo of an aircraft. Our in-browser model will analyze it and provide the top predictions.</p>
+                    <button class="upload-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        Choose File
+                    </button>
+                    <div class="file-status">
+                        <strong>Status:</strong> <span class="status-text">No file selected</span>
+                    </div>
+                </div>
+                <div class="prediction-area">
+                    <h3>Prediction Results</h3>
+                    <!-- Results will be dynamically added here -->
+                    <div class="placeholder-text">Predictions will appear here...</div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+</body>
+</html>

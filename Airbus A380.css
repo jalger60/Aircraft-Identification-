@@ -1,0 +1,140 @@
+/* --- General Setup & Typography --- */
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* --- A380 THEME --- */
+
+.page-header {
+    background: linear-gradient(90deg, #4e54c8, #8f94fb); /* A380 gradient */
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.aircraft-nav a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.aircraft-title {
+    background-color: #eef2ff; /* A380 color */
+    padding: 2.5rem;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 2rem;
+    border: 1px solid #dbe4ff;
+}
+
+.aircraft-title h1 {
+    margin: 0 0 1rem 0;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #3c3e8d; /* A380 color */
+}
+
+.intro-text {
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+    color: #333;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1.75fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.specifications-panel {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.hero-image {
+    background-image: url('Boeing777.jpeg'); 
+    height: 400px;
+    width: 800px;
+    border-radius: 12px;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+    /* Helps prevent blurring by preserving sharp edges */
+    image-rendering: -webkit-optimize-contrast; /* For older Chrome/Safari */
+    image-rendering: crisp-edges;
+}
+
+
+
+.specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+}
+
+.specs-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.specs-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Modifier for A380's simpler table */
+.specs-table.simple td {
+    font-family: 'Poppins', sans-serif;
+}
+
+.specs-table.simple td:first-child {
+    font-weight: 600;
+    color: #495057;
+    width: 30%;
+}
+
+.additional-info-panel {
+    background-color: #f0f7ff; /* A380 color */
+    border: 1px solid #d4e8ff;
+    color: #004085;
+    padding: 2rem;
+    border-radius: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+}
+
+.additional-info-panel h3 {
+    margin-top: 0;
+    border-bottom: 2px solid #b8daff; /* A380 color */
+    padding-bottom: 0.5rem;
+}
+
+.additional-info-panel ul {
+    padding-left: 20px;
+    line-height: 1.8;
+}
+
+@media (max-width: 900px) {
+    .content-grid, .additional-info-panel {
+        grid-template-columns: 1fr;
+    }
+    .aircraft-title h1 {
+        font-size: 2.2rem;
+    }
+}

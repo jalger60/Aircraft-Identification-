@@ -1,0 +1,150 @@
+/* --- General Setup & Typography --- */
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa; /* Very light gray background */
+    color: #212529;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* --- Header & Navigation (Magenta Bar) --- */
+.page-header {
+    background: linear-gradient(90deg, #d53369, #daae51); /* Creative gradient header */
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.aircraft-nav a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* --- Aircraft Title (Light Blue Bar) --- */
+.aircraft-title {
+    background-color: #e7f5ff; /* Light, airy blue */
+    padding: 2.5rem;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 2rem;
+    border: 1px solid #cce5ff;
+}
+
+.aircraft-title h1 {
+    margin: 0 0 1rem 0;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #004085;
+}
+
+.intro-text {
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* --- Content Grid (Holds Specs & Image) --- */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1.75fr 1fr; /* 65% for specs, 35% for image */
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.specifications-panel {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+
+.hero-image {
+    background-image: url('Boeing777.jpeg'); 
+    height: 400px;
+    width: 800px;
+    border-radius: 12px;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+    /* Helps prevent blurring by preserving sharp edges */
+    image-rendering: -webkit-optimize-contrast; /* For older Chrome/Safari */
+    image-rendering: crisp-edges;
+}
+
+/* --- Specifications Table Styling --- */
+.specs-table-container {
+    overflow-x: auto; /* Allows table to scroll horizontally on small screens */
+}
+
+.specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+}
+
+.specs-table th, .specs-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.specs-table thead th {
+    background-color: #f1f3f5;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: #495057;
+}
+
+.specs-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.specs-table td {
+    font-family: 'Roboto Mono', monospace; /* Good for tabular data */
+    font-size: 0.95rem;
+}
+
+/* --- Additional Info Panel (Accidents & Use) --- */
+.additional-info-panel {
+    background-color: #fff0f1; /* Corresponds to light red in wireframe */
+    border: 1px solid #ffd2d5;
+    color: #721c24;
+    padding: 2rem;
+    border-radius: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+}
+
+.additional-info-panel h3 {
+    margin-top: 0;
+    border-bottom: 2px solid #f5c6cb;
+    padding-bottom: 0.5rem;
+}
+
+.additional-info-panel ul {
+    padding-left: 20px;
+    line-height: 1.8;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 900px) {
+    .content-grid, .additional-info-panel {
+        grid-template-columns: 1fr; /* Stack columns on smaller screens */
+    }
+
+    .aircraft-title h1 {
+        font-size: 2.2rem;
+    }
+}
