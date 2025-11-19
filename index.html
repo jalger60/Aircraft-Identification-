@@ -91,11 +91,26 @@
             </section>
         </div>
     </main>
-
-  <script>
-    const statusDict = ["Waiting for file", "Loading file", "Performing inference", "Inference complete"];
+<script>
+    const statusDict = ["Waiting for file", "Loading file", "Performing inference", "Inference complete", "Model loaded, ready for files."];
     const modelClasses = ['Airbus A330', 'Airbus A350', 'Airbus A380', 'Boeing 777', 'Boeing 737 Max' ];
     const statusOutput = document.getElementById("status-output");
+    
+    // --- CHANGE 1: Add a global variable to manage the timer ---
+    let clearResultsTimer = null;
+
+    // --- OPTIMIZATION: Load the model once when the page starts ---
+    let inferenceSession;
+    async function initializeModel() {
+      try {
+        statusOutput.textContent = "Loading model...";
+        inferenceSession = await ort.InferenceSession.create('aircraft_model.onnx');
+        statusOutput.textContent = statusDict[4];
+      } catch (e) {
+        statusOutput.textContent = `Error loading model: ${e.message}`;
+      }
+    }
+    initializeModel();
 
     async function getImageTensorFromPath(path, dims = [1, 3, 224, 224]) {
       const image = await loadImagefromPath(path, dims[2], dims[3]);
@@ -144,14 +159,24 @@
     }
 
     async function inference(path) {
-      const session = await ort.InferenceSession.create('aircraft_model.onnx');
       const imageTensor = await getImageTensorFromPath(path);
       statusOutput.textContent = statusDict[2];
-      const results = await session.run({ input: imageTensor });
+      const results = await inferenceSession.run({ input: imageTensor });
       return softmax(Array.from(results.output.data));
     }
 
     async function inputChanged(event) {
+      // --- CHANGE 2: Cancel any previous timer that was set ---
+      // This prevents the old results from clearing if a new image is uploaded quickly.
+      if (clearResultsTimer) {
+        clearTimeout(clearResultsTimer);
+      }
+
+      if (!inferenceSession) {
+        statusOutput.textContent = "Model is not ready yet. Please wait.";
+        return;
+      }
+      
       statusOutput.textContent = statusDict[1];
       const result = await inference(URL.createObjectURL(event.target.files[0]));
       const classes = sortedClasses(result);
@@ -171,10 +196,19 @@
         outputDiv.appendChild(resultEl);
       });
       statusOutput.textContent = statusDict[3];
-    }
 
-    statusOutput.textContent = statusDict[0];
+      // --- CHANGE 3: Start a new 30-second timer to clear the results ---
+      clearResultsTimer = setTimeout(() => {
+        // This code will run after 30,000 milliseconds (30 seconds)
+        outputDiv.innerHTML = "Predictions will appear here...";
+        outputDiv.classList.add("placeholder-text");
+        // Reset the status to show the app is ready for another file
+        statusOutput.textContent = statusDict[4]; 
+      }, 30000);
+    }
   </script>
+  
 </body>
 </html>
+
 
