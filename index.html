@@ -94,7 +94,7 @@
 
   <script>
     const statusDict = ["Waiting for file", "Loading file", "Performing inference", "Inference complete"];
-    const modelClasses = ['Boeing 777', 'Boeing 787', 'Airbus A380', 'Airbus A320'];
+    const modelClasses = ['Airbus A330', 'Airbus A350', 'Airbus A380', 'Boeing 777', 'Boeing 737 Max' ];
     const statusOutput = document.getElementById("status-output");
 
     async function getImageTensorFromPath(path, dims = [1, 3, 224, 224]) {
@@ -177,3 +177,4 @@
   </script>
 </body>
 </html>
+
