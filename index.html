@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jimp/browser/lib/jimp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
 </head>
 <body>
 
@@ -54,7 +56,6 @@
 
     <main>
         <div class="main-container">
-            <!-- Hero Section combines Heading, Info, and Image -->
             <section class="hero-section">
                 <div class="hero-text">
                     <h1>Aircraft Identifier</h1>
@@ -64,31 +65,115 @@
                     </p>
                 </div>
                 <div class="hero-image">
-                    <!-- Image applied via CSS -->
                 </div>
             </section>
 
-            <!-- Tool Section for the ML Uploader -->
             <section class="tool-section">
                 <div class="tool-content">
                     <h2>Upload Your Image</h2>
                     <p class="instructions">Select a photo of an aircraft. Our in-browser model will analyze it and provide the top predictions.</p>
-                    <button class="upload-button">
+                    <input type="file" id="file-upload" onchange="inputChanged(event)" style="display: none;"/>
+                    <label for="file-upload" class="upload-button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
                         Choose File
-                    </button>
-                    <div class="file-status">
-                        <strong>Status:</strong> <span class="status-text">No file selected</span>
-                    </div>
+                    </label>
                 </div>
                 <div class="prediction-area">
                     <h3>Prediction Results</h3>
-                    <!-- Results will be dynamically added here -->
-                    <div class="placeholder-text">Predictions will appear here...</div>
+                    <section class="status-section">
+                      <p><strong>Status:</strong> <span id="status-output">Loading model...</span></p>
+                    </section>
+                    <section class="output-section">
+                      <h2>Model Output</h2>
+                      <div id="model-output" class="placeholder-text">Predictions will appear here...</div>
+                    </section>
                 </div>
             </section>
         </div>
     </main>
 
+  <script>
+    const statusDict = ["Waiting for file", "Loading file", "Performing inference", "Inference complete"];
+    const modelClasses = ['Boeing 777', 'Boeing 787', 'Airbus A380', 'Airbus A320'];
+    const statusOutput = document.getElementById("status-output");
+
+    async function getImageTensorFromPath(path, dims = [1, 3, 224, 224]) {
+      const image = await loadImagefromPath(path, dims[2], dims[3]);
+      return imageDataToTensor(image, dims);
+    }
+
+    async function loadImagefromPath(path, width = 224, height = 224) {
+            var imageData = await Jimp.read(path).then((imageBuffer) => {
+                return imageBuffer.cover(width, height);
+            });
+            return imageData;
+        }
+
+    function imageDataToTensor(image, dims) {
+          const imageBufferData = image.bitmap.data;
+          const [batch, channels, height, width] = dims;
+          const float32Data = new Float32Array(channels * height * width);
+          for (let i = 0, px = 0; i < imageBufferData.length; i += 4, px++) {
+            const r = (imageBufferData[i] / 255 - 0.5) / 0.5;
+            const g = (imageBufferData[i + 1] / 255 - 0.5) / 0.5;
+            const b = (imageBufferData[i + 2] / 255 - 0.5) / 0.5;
+            float32Data[0 * width * height + px] = r;
+            float32Data[1 * width * height + px] = g;
+            float32Data[2 * width * height + px] = b;
+          }
+          const inputTensor = new ort.Tensor("float32", float32Data, dims);
+          return inputTensor;
+        }
+
+    function sortedClasses(classProbabilities) {
+      const probs = Array.from(classProbabilities);
+      return probs.map((prob, i) => [prob, i])
+        .sort((a, b) => b[0] - a[0])
+        .map(([prob, index]) => ({
+          index,
+          name: modelClasses[index],
+          probability: prob
+        }));
+    }
+
+    function softmax(arr) {
+      const max = Math.max(...arr);
+      const exps = arr.map(x => Math.exp(x - max));
+      const sum = exps.reduce((a, b) => a + b);
+      return exps.map(e => e / sum);
+    }
+
+    async function inference(path) {
+      const session = await ort.InferenceSession.create('aircraft_model.onnx');
+      const imageTensor = await getImageTensorFromPath(path);
+      statusOutput.textContent = statusDict[2];
+      const results = await session.run({ input: imageTensor });
+      return softmax(Array.from(results.output.data));
+    }
+
+    async function inputChanged(event) {
+      statusOutput.textContent = statusDict[1];
+      const result = await inference(URL.createObjectURL(event.target.files[0]));
+      const classes = sortedClasses(result);
+      const outputDiv = document.getElementById("model-output");
+
+      outputDiv.innerHTML = "";
+      outputDiv.classList.remove("placeholder-text");
+      classes.forEach((entry, index) => {
+        const resultEl = document.createElement("div");
+        resultEl.className = index === 0 ? "result top" : "result";
+        resultEl.innerHTML = `
+          <strong>${entry.name}</strong>
+          <ul>
+            <li>Class ID: ${entry.index}</li>
+            <li>Probability: ${entry.probability.toFixed(4)}</li>
+          </ul>`;
+        outputDiv.appendChild(resultEl);
+      });
+      statusOutput.textContent = statusDict[3];
+    }
+
+    statusOutput.textContent = statusDict[0];
+  </script>
 </body>
 </html>
