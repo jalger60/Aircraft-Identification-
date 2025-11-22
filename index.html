@@ -15,38 +15,21 @@
 
     <header class="site-header">
     <div class="nav-container">
-        <!-- ACCESSIBILITY Best Practice: Wrapped the logo in a link to the homepage. -->
         <a href="index.html" class="logo">AeroVision</a>
-        
-        <!-- ACCESSIBILITY Best Practice: Added an aria-label to describe the purpose of the navigation. -->
         <nav class="main-nav" aria-label="Main navigation">
             <ul>
-                <!-- Boeing Dropdown Menu -->
                 <li class="dropdown">
-                    <!-- 
-                        ACCESSIBILITY CHANGES:
-                        1. aria-haspopup="true":  Tells screen readers that this link opens a menu.
-                        2. aria-expanded="false": Informs the user that the menu is currently closed.
-                        3. aria-controls="boeing-submenu": Programmatically links this button to the submenu it controls.
-                    -->
                     <a href="#" aria-haspopup="true" aria-expanded="false" aria-controls="boeing-submenu">Boeing <span class="arrow">&#9662;</span></a>
-                    
-                    <!-- ACCESSIBILITY: Added a unique 'id' to be referenced by the 'aria-controls' attribute above. -->
                     <ul class="submenu" id="boeing-submenu">
                         <li><a href="boeing777.html">Boeing 777</a></li>
                         <li><a href="#">Boeing 787</a></li>
                     </ul>
                 </li>
-
-                <!-- Airbus Dropdown Menu -->
                 <li class="dropdown">
-                    <!-- ACCESSIBILITY: Same ARIA attributes applied for the Airbus menu. -->
                     <a href="#" aria-haspopup="true" aria-expanded="false" aria-controls="airbus-submenu">Airbus <span class="arrow">&#9662;</span></a>
-                    
-                    <!-- ACCESSIBILITY: Added a unique 'id' for the Airbus submenu. -->
                     <ul class="submenu" id="airbus-submenu">
                         <li><a href="Airbus A380.html">Airbus A380</a></li>
-                        <li><a href="#">Airbus A320</a></li>
+                        <li><a href="Airbus A350.html">Airbus A350</a></li>
                     </ul>
                 </li>
             </ul>
@@ -91,29 +74,30 @@
             </section>
         </div>
     </main>
-<script>
-    // Added a new status for when the model is ready
+
+  <script>
     const statusDict = ["Waiting for file", "Loading file", "Performing inference", "Inference complete", "Model loaded, ready for files."];
-    const modelClasses = ['Airbus A330', 'Airbus A350', 'Airbus A380', 'Boeing 777', 'Boeing 737 Max' ];
+    const modelClasses = ['Boeing 777', 'Airbus A350', 'Airbus A380', 'Airbus A320', 'Boeing 737 Max'];
     const statusOutput = document.getElementById("status-output");
     
-    // --- CHANGE 1: Add a global variable to manage the timer ---
-    let clearResultsTimer = null;
-
-    // --- OPTIMIZATION: Load the model once when the page starts ---
+    // --- CHANGE 1: Create a global variable to hold the model session ---
     let inferenceSession;
+
+    // --- CHANGE 2: Create a main function to load the model on startup ---
     async function initializeModel() {
       try {
         statusOutput.textContent = "Loading model...";
-        // This line runs only ONCE, loading the model into memory
+        // Load the model and create a session. This will only happen once.
         inferenceSession = await ort.InferenceSession.create('aircraft_model.onnx');
-        // Update the status to show the app is ready
+        // Update the status to show the model is ready.
         statusOutput.textContent = statusDict[4];
       } catch (e) {
+        // If the model fails to load, display an error.
         statusOutput.textContent = `Error loading model: ${e.message}`;
       }
     }
-    // Run the model loader
+
+    // --- Call the initialization function when the script loads ---
     initializeModel();
 
     async function getImageTensorFromPath(path, dims = [1, 3, 224, 224]) {
@@ -162,33 +146,27 @@
       return exps.map(e => e / sum);
     }
 
-    // The inference function now reuses the loaded session for speed
+    // --- CHANGE 3: The inference function is now much simpler and faster ---
     async function inference(path) {
+      // It no longer creates a session. It just uses the one we already loaded.
       const imageTensor = await getImageTensorFromPath(path);
-      statusOutput.textContent = statusDict[2]; // "Performing inference"
+      statusOutput.textContent = statusDict[2];
+      // Use the global session to run the model.
       const results = await inferenceSession.run({ input: imageTensor });
       return softmax(Array.from(results.output.data));
     }
 
     async function inputChanged(event) {
-      // --- CHANGE 2: Cancel any previous timer that was set ---
-      // This prevents the old results from clearing if a new image is uploaded quickly.
-      if (clearResultsTimer) {
-        clearTimeout(clearResultsTimer);
-      }
-
-      // First, check if the model is loaded and ready
+      // --- CHANGE 4: Check if the model is loaded before proceeding ---
       if (!inferenceSession) {
         statusOutput.textContent = "Model is not ready yet. Please wait.";
         return;
       }
-      
-      statusOutput.textContent = statusDict[1]; // "Loading file"
+      statusOutput.textContent = statusDict[1];
       const result = await inference(URL.createObjectURL(event.target.files[0]));
       const classes = sortedClasses(result);
       const outputDiv = document.getElementById("model-output");
 
-      // Display the new results
       outputDiv.innerHTML = "";
       outputDiv.classList.remove("placeholder-text");
       classes.forEach((entry, index) => {
@@ -202,23 +180,9 @@
           </ul>`;
         outputDiv.appendChild(resultEl);
       });
-
-      // Update status to "Inference complete"
       statusOutput.textContent = statusDict[3];
-
-      // --- CHANGE 3: Start the 30-second timer AFTER inference is complete ---
-      clearResultsTimer = setTimeout(() => {
-        // This code will run after 30,000 milliseconds
-        outputDiv.innerHTML = "Predictions will appear here...";
-        outputDiv.classList.add("placeholder-text");
-        // Reset the status to show the app is ready for another file
-        statusOutput.textContent = statusDict[4]; 
-      }, 30000); // 30 seconds
     }
+    // The initial status is now handled by the initializeModel function.
   </script>
-  
 </body>
 </html>
-
-
-
