@@ -12,14 +12,12 @@ body {
     padding: 2rem;
 }
 
-/* --- Header & Navigation (Magenta Bar) --- */
 .page-header {
-    background: linear-gradient(90deg, #d53369, #daae51); /* Creative gradient header */
+    /* CHANGED: Darkened #daae51 to #b08d40 to ensure white text is readable */
+    background: linear-gradient(90deg, #d53369, #b08d40); 
     padding: 1rem 2rem;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-   
 }
-
 .aircraft-nav a {
     color: white;
     text-decoration: none;
@@ -154,6 +152,31 @@ body {
 }
 .youtube-link:hover {
     background-color: #e00074; /* Magenta */
+}
+
+/* --- Footer Styling --- */
+.site-footer {
+    background-color: #1c2a38;
+    color: #ffffff;
+    padding: 2rem 0;
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.github-link {
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+.github-link:hover {
+    color: #daae51; /* Gold hover */
 }
 
 /* --- Responsive Design --- */
