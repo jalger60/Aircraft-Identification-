@@ -17,14 +17,14 @@ body {
     background: linear-gradient(90deg, #d53369, #daae51); /* Creative gradient header */
     padding: 1rem 2rem;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    text-align: center;
+   
 }
 
 .aircraft-nav a {
+    color: white;
     text-decoration: none;
-    color: #ffffff;
     font-weight: 600;
-    font-size: 1.1rem;
+    margin-left: 20px;
 }
 
 /* --- Aircraft Title (Light Blue Bar) --- */
@@ -67,23 +67,23 @@ body {
 }
 
 
-.hero-image {
-    background-image: url('Boeing777.jpeg'); 
-    height: 400px;
-    width: 800px;
-    border-radius: 12px;
-    background-size: cover;
-    background-position: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-
-    /* Helps prevent blurring by preserving sharp edges */
-    image-rendering: -webkit-optimize-contrast; /* For older Chrome/Safari */
-    image-rendering: crisp-edges;
+.hero-image img {
+    width: 100%; /* Make the image fit the container's width */
+    height: auto; /* Maintain the aspect ratio */
+    display: block; /* Remove any extra space below the image */
+    border-radius: 8px; /* Round the corners of the image */
 }
 
 /* --- Specifications Table Styling --- */
 .specs-table-container {
     overflow-x: auto; /* Allows table to scroll horizontally on small screens */
+}
+
+.image-caption {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px; /* Adds a little space between image and text */
+    color: #333;      /* Optional: Dark grey color for better readability */
 }
 
 .specs-table {
@@ -136,6 +136,24 @@ body {
 .additional-info-panel ul {
     padding-left: 20px;
     line-height: 1.8;
+}
+
+/* YouTube Link Style */
+.youtube-link-container {
+    margin-bottom: 1.5rem;
+}
+.youtube-link {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #c2185b; /* Darker Magenta */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+.youtube-link:hover {
+    background-color: #e00074; /* Magenta */
 }
 
 /* --- Responsive Design --- */

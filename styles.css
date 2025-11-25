@@ -259,3 +259,8 @@ body {
 .main-nav li.dropdown:hover > a .arrow {
     transform: rotate(180deg);
 }
+
+/* Hides the default file input */
+.hidden-input {
+    display: none;
+}

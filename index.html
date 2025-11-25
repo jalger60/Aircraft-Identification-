@@ -4,12 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aircraft Identifier</title>
+    
+    <!-- SECURITY: Referrer Policy -->
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
+    <!-- SECURITY: Content Security Policy -->
+    <!-- 'unsafe-eval' is required for ONNX Runtime. 'unsafe-inline' is required for the script at the bottom. -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' https://cdn.jsdelivr.net 'unsafe-eval' 'unsafe-inline';
+        style-src 'self' https://fonts.googleapis.com;
+        font-src https://fonts.gstatic.com;
+        img-src 'self' blob: data:;
+        connect-src 'self';
+        worker-src blob:;
+        object-src 'none';
+        base-uri 'self';
+    ">
+
+    <!-- SECURITY: Anti-Clickjacking (Frame Buster) -->
+    <script>
+        if (window.self !== window.top) {
+            window.top.location.href = window.location.href;
+        }
+    </script>
+
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/jimp/browser/lib/jimp.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+    
+    <!-- SECURITY: Subresource Integrity (SRI) -->
+    <!-- TODO: Go to https://www.srihash.org/, paste these URLs, and replace 'INSERT_HASH_HERE' with the result -->
+    <script src="https://cdn.jsdelivr.net/npm/jimp/browser/lib/jimp.min.js" integrity="INSERT_HASH_HERE" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js" integrity="INSERT_HASH_HERE" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -55,10 +83,20 @@
                 <div class="tool-content">
                     <h2>Upload Your Image</h2>
                     <p class="instructions">Select a photo of an aircraft. Our in-browser model will analyze it and provide the top predictions.</p>
-                    <input type="file" id="file-upload" onchange="inputChanged(event)" style="display: none;"/>
+                    
+                    <!-- Added class="hidden-input" to hide the default ugly button -->
+                    <input 
+                        type="file" 
+                        id="file-upload" 
+                        class="hidden-input"
+                        onchange="inputChanged(event)" 
+                        accept="image/png, image/jpeg, image/webp"
+                    />
+                    
                     <label for="file-upload" class="upload-button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                        Choose File
+                        <!-- Added span ID so we can update text -->
+                        <span id="file-label-text">Choose File</span>
                     </label>
                 </div>
                 <div class="prediction-area">
@@ -80,24 +118,19 @@
     const modelClasses = ['Boeing 777', 'Airbus A350', 'Airbus A380', 'Airbus A320', 'Boeing 737 Max'];
     const statusOutput = document.getElementById("status-output");
     
-    // --- CHANGE 1: Create a global variable to hold the model session ---
     let inferenceSession;
 
-    // --- CHANGE 2: Create a main function to load the model on startup ---
     async function initializeModel() {
       try {
         statusOutput.textContent = "Loading model...";
-        // Load the model and create a session. This will only happen once.
         inferenceSession = await ort.InferenceSession.create('aircraft_model.onnx');
-        // Update the status to show the model is ready.
         statusOutput.textContent = statusDict[4];
       } catch (e) {
-        // If the model fails to load, display an error.
         statusOutput.textContent = `Error loading model: ${e.message}`;
+        console.error(e);
       }
     }
 
-    // --- Call the initialization function when the script loads ---
     initializeModel();
 
     async function getImageTensorFromPath(path, dims = [1, 3, 224, 224]) {
@@ -146,44 +179,69 @@
       return exps.map(e => e / sum);
     }
 
-    // --- CHANGE 3: The inference function is now much simpler and faster ---
     async function inference(path) {
-      // It no longer creates a session. It just uses the one we already loaded.
       const imageTensor = await getImageTensorFromPath(path);
       statusOutput.textContent = statusDict[2];
-      // Use the global session to run the model.
       const results = await inferenceSession.run({ input: imageTensor });
       return softmax(Array.from(results.output.data));
     }
 
     async function inputChanged(event) {
-      // --- CHANGE 4: Check if the model is loaded before proceeding ---
+      const file = event.target.files[0];
+
+      // SECURITY: 1. Check if file exists
+      if (!file) return;
+      
+      const labelText = document.getElementById('file-label-text');
+      labelText.textContent = file.name;
+
+      // SECURITY: 2. Validate File Type (Allow only images)
+      const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+      if (!validTypes.includes(file.type)) {
+          alert("Invalid file type. Please upload a JPEG, PNG, or WebP image.");
+          // Reset the input so they can try again
+          event.target.value = ''; 
+          return;
+      }
+
+      // SECURITY: 3. Validate File Size (Limit to 10MB to prevent browser crash/DoS)
+      const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+      if (file.size > maxSize) {
+          alert("File is too large. Please upload an image smaller than 10MB.");
+          event.target.value = '';
+          return;
+      }
+
       if (!inferenceSession) {
         statusOutput.textContent = "Model is not ready yet. Please wait.";
         return;
       }
-      statusOutput.textContent = statusDict[1];
-      const result = await inference(URL.createObjectURL(event.target.files[0]));
-      const classes = sortedClasses(result);
-      const outputDiv = document.getElementById("model-output");
 
-      outputDiv.innerHTML = "";
-      outputDiv.classList.remove("placeholder-text");
-      classes.forEach((entry, index) => {
-        const resultEl = document.createElement("div");
-        resultEl.className = index === 0 ? "result top" : "result";
-        resultEl.innerHTML = `
-          <strong>${entry.name}</strong>
-          <ul>
-            <li>Class ID: ${entry.index}</li>
-            <li>Probability: ${entry.probability.toFixed(4)}</li>
-          </ul>`;
-        outputDiv.appendChild(resultEl);
-      });
-      statusOutput.textContent = statusDict[3];
+      try {
+          statusOutput.textContent = statusDict[1];
+          const result = await inference(URL.createObjectURL(file));
+          const classes = sortedClasses(result);
+          const outputDiv = document.getElementById("model-output");
+
+          outputDiv.innerHTML = "";
+          outputDiv.classList.remove("placeholder-text");
+          classes.forEach((entry, index) => {
+            const resultEl = document.createElement("div");
+            resultEl.className = index === 0 ? "result top" : "result";
+            resultEl.innerHTML = `
+              <strong>${entry.name}</strong>
+              <ul>
+                <li>Class ID: ${entry.index}</li>
+                <li>Probability: ${entry.probability.toFixed(4)}</li>
+              </ul>`;
+            outputDiv.appendChild(resultEl);
+          });
+          statusOutput.textContent = statusDict[3];
+      } catch (error) {
+          console.error(error);
+          statusOutput.textContent = "Error processing image.";
+      }
     }
-    // The initial status is now handled by the initializeModel function.
   </script>
 </body>
 </html>
-

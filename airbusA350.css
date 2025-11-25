@@ -48,6 +48,16 @@ body {
     line-height: 1.6;
 }
 
+
+.image-caption {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px; /* Adds a little space between image and text */
+    color: #333;      /* Optional: Dark grey color for better readability */
+}
+
+
+
 /* Main Content Grid Layout */
 .content-grid {
     display: grid;
@@ -59,8 +69,9 @@ body {
 /* Specifications Panel */
 .specifications-panel {
     background-color: #ffebee; /* Light Red */
-    padding: 20px;
-    border-radius: 8px;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
 .specifications-panel h2 {

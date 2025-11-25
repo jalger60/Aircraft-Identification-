@@ -18,7 +18,7 @@ body {
     background: linear-gradient(90deg, #4e54c8, #8f94fb); /* A380 gradient */
     padding: 1rem 2rem;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    text-align: center;
+    
 }
 
 .aircraft-nav a {
@@ -58,6 +58,14 @@ body {
     margin-bottom: 2rem;
 }
 
+.image-caption {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px; /* Adds a little space between image and text */
+    color: #333;      /* Optional: Dark grey color for better readability */
+}
+
+
 .specifications-panel {
     background-color: #ffffff;
     padding: 2rem;
@@ -65,21 +73,12 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-.hero-image {
-    background-image: url('Boeing777.jpeg'); 
-    height: 400px;
-    width: 800px;
-    border-radius: 12px;
-    background-size: cover;
-    background-position: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-
-    /* Helps prevent blurring by preserving sharp edges */
-    image-rendering: -webkit-optimize-contrast; /* For older Chrome/Safari */
-    image-rendering: crisp-edges;
+.hero-image img {
+    width: 100%; /* Make the image fit the container's width */
+    height: auto; /* Maintain the aspect ratio */
+    display: block; /* Remove any extra space below the image */
+    border-radius: 8px; /* Round the corners of the image */
 }
-
-
 
 .specs-table {
     width: 100%;
@@ -128,6 +127,25 @@ body {
 .additional-info-panel ul {
     padding-left: 20px;
     line-height: 1.8;
+}
+
+
+/* YouTube Link Style */
+.youtube-link-container {
+    margin-bottom: 1.5rem;
+}
+.youtube-link {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #c2185b; /* Darker Magenta */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+.youtube-link:hover {
+    background-color: #e00074; /* Magenta */
 }
 
 @media (max-width: 900px) {

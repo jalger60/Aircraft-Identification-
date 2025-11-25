@@ -145,6 +145,14 @@ body {
     margin-bottom: 10px;
 }
 
+.image-caption {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px; /* Adds a little space between image and text */
+    color: #333;      /* Optional: Dark grey color for better readability */
+}
+
+
 /* Responsive Design */
 @media (max-width: 900px) {
     .content-grid, .additional-info-panel {
