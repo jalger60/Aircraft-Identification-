@@ -34,10 +34,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     
-    <!-- SECURITY: Subresource Integrity (SRI) -->
-    <!-- TODO: Go to https://www.srihash.org/, paste these URLs, and replace 'INSERT_HASH_HERE' with the result -->
-    <script src="https://cdn.jsdelivr.net/npm/jimp/browser/lib/jimp.min.js" integrity="INSERT_HASH_HERE" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js" integrity="INSERT_HASH_HERE" crossorigin="anonymous"></script>
+    
 </head>
 <body>
 
@@ -217,7 +214,7 @@
         return;
       }
 
-      try {
+     try {
           statusOutput.textContent = statusDict[1];
           const result = await inference(URL.createObjectURL(file));
           const classes = sortedClasses(result);
@@ -228,12 +225,19 @@
           classes.forEach((entry, index) => {
             const resultEl = document.createElement("div");
             resultEl.className = index === 0 ? "result top" : "result";
+            
+            // --- MODIFIED SECTION ---
+            // Multiplies by 100, rounds to 2 decimals, and adds '%'
+            const percentage = (entry.probability * 100).toFixed(2);
+            
             resultEl.innerHTML = `
               <strong>${entry.name}</strong>
               <ul>
                 <li>Class ID: ${entry.index}</li>
-                <li>Probability: ${entry.probability.toFixed(4)}</li>
+                <li>Probability: ${percentage}%</li>
               </ul>`;
+            // ------------------------
+            
             outputDiv.appendChild(resultEl);
           });
           statusOutput.textContent = statusDict[3];
@@ -246,4 +250,5 @@
 </body>
 
 </html>
+
 
