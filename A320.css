@@ -153,6 +153,31 @@ body {
     color: #333;      /* Optional: Dark grey color for better readability */
 }
 
+/* --- Footer Styling --- */
+.site-footer {
+    background-color: #1c2a38;
+    color: #ffffff;
+    padding: 2rem 0;
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.github-link {
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+.github-link:hover {
+    color: #daae51; /* Gold hover */
+}
+
 
 /* Responsive Design */
 @media (max-width: 900px) {
