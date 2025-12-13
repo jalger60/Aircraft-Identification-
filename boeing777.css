@@ -84,32 +84,77 @@ body {
     color: #333;      /* Optional: Dark grey color for better readability */
 }
 
-/* --- Unit Toggle Switch Styling --- */
+/* 1. Container Styling */
 .toggle-container {
-    /* Matches the table header background for consistency */
+    /* Light gray background matching your table headers */
     background-color: #f1f3f5; 
-    padding: 10px 15px;
-    border-radius: 8px;
-    display: inline-block;
-    margin-bottom: 15px;
+    padding: 12px 20px;
+    border-radius: 50px; /* Fully rounded pill shape */
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 20px;
     border: 1px solid #dee2e6;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Subtle shadow for depth */
 }
 
+/* 2. Label Text Styling */
 .toggle-container label {
     cursor: pointer;
-    font-weight: 600;
-    /* Matches your aircraft-title color */
+    font-weight: 700;
+    /* Uses the deep blue from your Aircraft Title */
     color: #004085; 
     display: flex;
     align-items: center;
-    gap: 10px; /* Space between checkbox and text */
-    user-select: none; /* Prevents text highlighting when clicking repeatedly */
+    gap: 15px; /* Space between the slider and the text */
+    font-size: 1rem;
+    user-select: none; /* Prevents text highlighting on click */
 }
 
+/* 3. The Slider (Styling the Checkbox Input) */
 .toggle-container input[type="checkbox"] {
-    /* Makes the checkbox slightly larger and easier to click */
-    transform: scale(1.2); 
+    /* Remove default browser checkbox look */
+    -webkit-appearance: none;
+    appearance: none;
+    
+    /* Create the "Track" */
+    width: 50px;
+    height: 26px;
+    background: #adb5bd; /* Gray when 'Imperial' (unchecked) */
+    border-radius: 20px;
+    position: relative;
     cursor: pointer;
+    outline: none;
+    transition: background 0.3s ease; /* Smooth color transition */
+}
+
+/* 4. The Knob (The circle inside the slider) */
+.toggle-container input[type="checkbox"]::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease; /* Smooth slide animation */
+}
+
+/* 5. Active State (When switched to Metric) */
+.toggle-container input[type="checkbox"]:checked {
+    /* Uses the Magenta from your YouTube link for consistency */
+    background: #c2185b; 
+}
+
+.toggle-container input[type="checkbox"]:checked::after {
+    /* Slides the knob to the right */
+    transform: translateX(24px); 
+}
+
+/* Optional: Hover effect for better interactivity */
+.toggle-container:hover {
+    border-color: #c2185b;
 }
 
 .specs-table {

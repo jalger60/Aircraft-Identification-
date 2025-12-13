@@ -1,34 +1,29 @@
-/**
- * boeing777.js
- * Handles unit toggling for the specifications table.
- */
-
-// Wait for the HTML to load completely before running this
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // Find the toggle checkbox by its ID
     const toggleButton = document.getElementById('unitToggle');
+    
+    // Set initial state: Ensure Metric is hidden and Imperial is shown on load
+    // (This prevents both from showing up at the same time if CSS didn't catch it)
+    toggleUnits(); 
 
-    // If the button exists, listen for 'change' events (checking/unchecking)
     if (toggleButton) {
         toggleButton.addEventListener('change', toggleUnits);
     }
 });
 
 function toggleUnits() {
-    // Get the current state of the checkbox
-    const isChecked = document.getElementById('unitToggle').checked;
+    // Check if the box is checked (True = Metric Mode)
+    const isMetric = document.getElementById('unitToggle').checked;
     
-    // Select all elements with the 'metric' class
-    const metrics = document.querySelectorAll('.metric');
+    const imperialElements = document.querySelectorAll('.imperial');
+    const metricElements = document.querySelectorAll('.metric');
 
-    metrics.forEach(el => {
-        if (isChecked) {
-            // If checked, HIDE metric (Imperial stays visible)
-            el.style.display = 'none';
-        } else {
-            // If unchecked, SHOW metric
-            el.style.display = 'inline';
-        }
-    });
+    if (isMetric) {
+        // METRIC MODE: Show metric, Hide imperial
+        imperialElements.forEach(el => el.style.display = 'none');
+        metricElements.forEach(el => el.style.display = 'inline');
+    } else {
+        // IMPERIAL MODE: Show imperial, Hide metric
+        imperialElements.forEach(el => el.style.display = 'inline');
+        metricElements.forEach(el => el.style.display = 'none');
+    }
 }
