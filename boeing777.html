@@ -3,15 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Detailed specifications, history, and safety record of the Boeing 777 aircraft">
     <title>Boeing 777 Details</title>
     <link rel="stylesheet" href="boeing777.css">
-    <script src="toggleUnits.js" defer></script>
-    <!-- SECURITY: Referrer Policy -->
     <meta name="referrer" content="strict-origin-when-cross-origin">
 
-    <!-- SECURITY: Content Security Policy -->
-    <!-- Note: We don't need 'unsafe-eval' here because we aren't running ONNX on this page -->
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'self';
         script-src 'self';
@@ -21,18 +16,16 @@
         object-src 'none';
         base-uri 'self';
     ">
+</head>
 <body>
 
-    <!-- NAV TABS (Magenta Bar) -->
     <header class="page-header">
         <nav class="aircraft-nav">
-            <!-- This link should point back to your main page -->
             <a href="index.html">&larr; Back to Main Page</a>
         </nav>
     </header>
 
     <main class="container">
-        <!-- HEADING (Light Blue Bar) -->
         <section class="aircraft-title">
             <h1>Boeing 777: A Comprehensive Overview</h1>
             <p class="intro-text">
@@ -40,23 +33,20 @@
             </p>
         </section>
 
-        <!-- Main content area with specs and image -->
         <section class="content-grid">
-            <!-- AIRCRAFT SPECS (Light Red Section - Left) -->
             <div class="specifications-panel">
                 <h2>Specifications</h2>
                 
                 <p>The specifications of the Boeing 777 vary by variant. Here's a breakdown of the key specifications for major passenger models:</p>
                 
+                <div class="toggle-container" style="margin-bottom: 15px;">
+                    <label for="unitToggle" style="font-weight: bold; cursor: pointer;">
+                        <input type="checkbox" id="unitToggle"> 
+                        Hide Metric Units (Imperial Only)
+                    </label>
+                </div>
+                
                 <div class="specs-table-container">
-
-                    <div class="unit-toggle">
-                        <label class="switch">
-                            <input type="checkbox" id="unitToggle" onclick="toggleUnits()">
-                            <span class="slider round"></span>
-                        </label>
-                        <span id="unitLabel">Show Imperial Measurements</span>
-                    </div>
                     <table class="specs-table">
                         <thead>
                             <tr>
@@ -69,58 +59,55 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td><strong>Seating (3-class)</strong></td>
-                            <td>301-314</td>
-                            <td>301</td>
-                            <td>301</td>
-                            <td>365-368</td>
-                            <td>365</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Length</strong></td>
-                            <!-- Notice the span tags added below -->
-                            <td><span class="imperial">209 ft 1 in</span> <span class="metric">(63.7 m)</span></td>
-                            <td><span class="imperial">209 ft 1 in</span> <span class="metric">(63.7 m)</span></td>
-                            <td><span class="imperial">209 ft 1 in</span> <span class="metric">(63.7 m)</span></td>
-                            <td><span class="imperial">242 ft 4 in</span> <span class="metric">(73.9 m)</span></td>
-                            <td><span class="imperial">242 ft 4 in</span> <span class="metric">(73.9 m)</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Wingspan</strong></td>
-                            <td><span class="imperial">199 ft 11 in</span> <span class="metric">(60.9 m)</span></td>
-                            <td><span class="imperial">199 ft 11 in</span> <span class="metric">(60.9 m)</span></td>
-                            <td><span class="imperial">212 ft 7 in</span> <span class="metric">(64.8 m)</span></td>
-                            <td><span class="imperial">199 ft 11 in</span> <span class="metric">(60.9 m)</span></td>
-                            <td><span class="imperial">212 ft 7 in</span> <span class="metric">(64.8 m)</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Tail Height</strong></td>
-                            <td><span class="imperial">60 ft 9 in</span> <span class="metric">(18.5 m)</span></td>
-                            <td><span class="imperial">60 ft 9 in</span> <span class="metric">(18.5 m)</span></td>
-                            <td><span class="imperial">60 ft 9 in</span> <span class="metric">(18.5 m)</span></td>
-                            <td><span class="imperial">60 ft 8 in</span> <span class="metric">(18.5 m)</span></td>
-                            <td><span class="imperial">60 ft 8 in</span> <span class="metric">(18.5 m)</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Range</strong></td>
-                            <td><span class="imperial">5,240 nm</span> <span class="metric">(9,700 km)</span></td>
-                            <td><span class="imperial">7,065 nm</span> <span class="metric">(13,080 km)</span></td>
-                            <td><span class="imperial">8,555 nm</span> <span class="metric">(15,843 km)</span></td>
-                            <td><span class="imperial">6,005 nm</span> <span class="metric">(11,120 km)</span></td>
-                            <td><span class="imperial">7,370 nm</span> <span class="metric">(13,650 km)</span></td>
-                        </tr>
-                    </tbody>
+                            <tr>
+                                <td><strong>Seating (3-class)</strong></td>
+                                <td>301-314</td>
+                                <td>301</td>
+                                <td>301</td>
+                                <td>365-368</td>
+                                <td>365</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Length</strong></td>
+                                <td>209 ft 1 in <span class="metric">(63.7 m)</span></td>
+                                <td>209 ft 1 in <span class="metric">(63.7 m)</span></td>
+                                <td>209 ft 1 in <span class="metric">(63.7 m)</span></td>
+                                <td>242 ft 4 in <span class="metric">(73.9 m)</span></td>
+                                <td>242 ft 4 in <span class="metric">(73.9 m)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Wingspan</strong></td>
+                                <td>199 ft 11 in <span class="metric">(60.9 m)</span></td>
+                                <td>199 ft 11 in <span class="metric">(60.9 m)</span></td>
+                                <td>212 ft 7 in <span class="metric">(64.8 m)</span></td>
+                                <td>199 ft 11 in <span class="metric">(60.9 m)</span></td>
+                                <td>212 ft 7 in <span class="metric">(64.8 m)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tail Height</strong></td>
+                                <td>60 ft 9 in <span class="metric">(18.5 m)</span></td>
+                                <td>60 ft 9 in <span class="metric">(18.5 m)</span></td>
+                                <td>60 ft 9 in <span class="metric">(18.5 m)</span></td>
+                                <td>60 ft 8 in <span class="metric">(18.5 m)</span></td>
+                                <td>60 ft 8 in <span class="metric">(18.5 m)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Range</strong></td>
+                                <td>5,240 nm <span class="metric">(9,700 km)</span></td>
+                                <td>7,065 nm <span class="metric">(13,080 km)</span></td>
+                                <td>8,555 nm <span class="metric">(15,843 km)</span></td>
+                                <td>6,005 nm <span class="metric">(11,120 km)</span></td>
+                                <td>7,370 nm <span class="metric">(13,650 km)</span></td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- AIRCRAFT IMAGE (Teal Section - Right) -->
             <div class="hero-image">
                 <img src="Boeing777.jpeg" alt="Boeing 737 MAX in flight">
                 <p class="image-caption">Boeing 777 in Flight</p>
 
-                <!-- YouTube Link -->
                 <p class="youtube-link-container">
                     <a href="https://www.youtube.com/watch?v=6I7i_hYJqag" target="_blank" class="youtube-link">
                         YouTube: A Brief History of Boeing 777
@@ -129,7 +116,6 @@
             </div>
         </section>
 
-        <!-- ACCIDENTS AND AIRLINE USE (Light Red Section - Bottom) -->
         <section class="additional-info-panel">
             <div class="info-column">
                 <h3>Major Accidents</h3>
@@ -164,13 +150,14 @@
         <div class="container footer-content">
             <p>&copy; 2025 AeroVision. All rights reserved.</p>
             <a href="https://github.com/jalger60" target="_blank" rel="noopener noreferrer" class="github-link" aria-label="Visit our GitHub">
-                <!-- GitHub SVG Icon -->
                 <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                 </svg>
             </a>
         </div>
     </footer>
+
+    <script src="boeing777.js"></script>
 
 </body>
 </html>
