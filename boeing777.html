@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Detailed specifications, history, and safety record of the Boeing 777 aircraft">
     <title>Boeing 777 Details</title>
     <link rel="stylesheet" href="boeing777.css">
     <!-- SECURITY: Referrer Policy -->
@@ -47,6 +48,14 @@
                 <p>The specifications of the Boeing 777 vary by variant. Here's a breakdown of the key specifications for major passenger models:</p>
                 
                 <div class="specs-table-container">
+
+                    <div class="unit-toggle">
+                        <label class="switch">
+                            <input type="checkbox" id="unitToggle" onclick="toggleUnits()">
+                            <span class="slider round"></span>
+                        </label>
+                        <span id="unitLabel">Show Imperial Only</span>
+                    </div>
                     <table class="specs-table">
                         <thead>
                             <tr>
