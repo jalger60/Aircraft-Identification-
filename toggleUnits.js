@@ -1,16 +1,16 @@
 function toggleUnits() {
     const isChecked = document.getElementById('unitToggle').checked;
-    // This is a simplified example. You would wrap your table data in spans:
-    // <span class="metric">63.7 m</span> <span class="imperial hidden">(209 ft)</span>
     
+    // We only need to target the metric units to hide/show them
     const metrics = document.querySelectorAll('.metric');
-    const imperials = document.querySelectorAll('.imperial');
 
-    if (isChecked) {
-        metrics.forEach(el => el.style.display = 'none');
-        imperials.forEach(el => el.style.display = 'inline');
-    } else {
-        metrics.forEach(el => el.style.display = 'inline');
-        imperials.forEach(el => el.style.display = 'none');
-    }
+    metrics.forEach(el => {
+        if (isChecked) {
+            // If checked, HIDE metric (Imperial stays visible)
+            el.style.display = 'none';
+        } else {
+            // If unchecked, SHOW metric (Imperial stays visible)
+            el.style.display = 'inline';
+        }
+    });
 }
