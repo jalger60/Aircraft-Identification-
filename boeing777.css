@@ -84,13 +84,33 @@ body {
     color: #333;      /* Optional: Dark grey color for better readability */
 }
 
-/* Simple Switch CSS */
-.switch { position: relative; display: inline-block; width: 60px; height: 34px; vertical-align: middle; }
-.switch input { opacity: 0; width: 0; height: 0; }
-.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
-.slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
-input:checked + .slider { background-color: #0056b3; }
-input:checked + .slider:before { transform: translateX(26px); }
+/* --- Unit Toggle Switch Styling --- */
+.toggle-container {
+    /* Matches the table header background for consistency */
+    background-color: #f1f3f5; 
+    padding: 10px 15px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-bottom: 15px;
+    border: 1px solid #dee2e6;
+}
+
+.toggle-container label {
+    cursor: pointer;
+    font-weight: 600;
+    /* Matches your aircraft-title color */
+    color: #004085; 
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between checkbox and text */
+    user-select: none; /* Prevents text highlighting when clicking repeatedly */
+}
+
+.toggle-container input[type="checkbox"] {
+    /* Makes the checkbox slightly larger and easier to click */
+    transform: scale(1.2); 
+    cursor: pointer;
+}
 
 .specs-table {
     width: 100%;
