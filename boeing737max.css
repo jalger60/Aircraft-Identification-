@@ -152,6 +152,43 @@ body {
     color: #333;      /* Optional: Dark grey color for better readability */
 }
 
+
+
+/* --- Footer Styling --- */
+.site-footer {
+    background-color: #1c2a38;
+    color: #ffffff;
+    padding: 2rem 0;
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.github-link {
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+.github-link:hover {
+    color: #daae51; /* Gold hover */
+}
+
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .content-grid, .additional-info-panel {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Unit Toggle Switch Styling --- */
+
 /* 1. Container Styling */
 .toggle-container {
     /* Light gray background matching your table headers */
@@ -169,7 +206,7 @@ body {
 .toggle-container label {
     cursor: pointer;
     font-weight: 700;
-    /* Uses the deep blue from your Aircraft Title */
+    /* Uses a deep blue/teal for contrast */
     color: #004085; 
     display: flex;
     align-items: center;
@@ -223,37 +260,4 @@ body {
 /* Optional: Hover effect for better interactivity */
 .toggle-container:hover {
     border-color: #c2185b;
-}
-
-/* --- Footer Styling --- */
-.site-footer {
-    background-color: #1c2a38;
-    color: #ffffff;
-    padding: 2rem 0;
-    margin-top: 3rem;
-    text-align: center;
-}
-
-.footer-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.github-link {
-    color: #ffffff;
-    transition: color 0.3s ease;
-}
-
-.github-link:hover {
-    color: #daae51; /* Gold hover */
-}
-
-
-/* Responsive Design */
-@media (max-width: 900px) {
-    .content-grid, .additional-info-panel {
-        grid-template-columns: 1fr;
-    }
 }
